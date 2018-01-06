@@ -29,3 +29,5 @@ Temporary Items
 
 vendor
 .bundle
+.env
+Gemfile.lock
