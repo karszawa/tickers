@@ -92,12 +92,12 @@ bnk_candles.each do |candle|
   next unless candle.start_value && candle.end_value
 
   value = (candle.start_value + candle.end_value) / 2
-  es_post("ticker/#{candle.symbol}", { price: value }.to_json)
+  es_post("ticker/#{candle.symbol}", candle.to_h.merge({ price: value }).to_json)
 end
 
 btm_candles.each do |candle|
   next unless candle.start_value && candle.end_value
 
   value = (candle.start_value + candle.end_value) / 2
-  es_post("ticker/#{candle.symbol}", { price: value }.to_json)
+  es_post("ticker/#{candle.symbol}", candle.to_h.merge({ price: value }).to_json)
 end
