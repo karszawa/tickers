@@ -96,5 +96,15 @@ end
   next unless candle.start_value && candle.end_value
 
   value = (candle.start_value + candle.end_value) / 2
-  es_post("ticker/currency", candle.to_h.merge({ price: value }).to_json)
+  es_post('ticker/currency', candle.to_h.merge({ price: value }).to_json)
+end
+
+bnk_candles.zip(btm_candles).each do |bnk_candle, btm_candle|
+  next unless bnk_candle.start_value && bnk_candle.end_value
+  next unless btm_candle.start_value && btm_candle.end_value
+
+  bnk_value = (bnk_candle.start_value + bnk_candle.end_value) / 2
+  btm_value = (btm_candle.start_value + btm_candle.end_value) / 2
+
+  es_post('ticker/deviation', { price: (bnk_value + btm_value) / 2 }.to_json)
 end
