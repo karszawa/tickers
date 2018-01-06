@@ -1,6 +1,13 @@
-require "net/http"
-require "uri"
-require "json"
+require 'bundler'
+
+Bundler.require
+
+require 'dotenv/load'
+
+require 'net/http'
+require 'uri'
+require 'json'
+require 'pry'
 
 BNK_BASE = "https://public.bitbank.cc"
 BTM_BASE = "https://api.bithumb.com"
