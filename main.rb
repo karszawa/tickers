@@ -66,7 +66,7 @@ btm_thread = Thread.new do
     currency = (pair == 'bcc_jpy' ? 'bch' : pair.split('_').first)
 
     CandleStick.with(
-      timestamp: now,
+      timestamp: now.to_i,
       symbol: "btm_#{pair}",
       start_value: prices[currency].last,
       end_value: prices[currency].first,
