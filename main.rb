@@ -76,9 +76,6 @@ btm_thread = Thread.new do
   end
 end
 
-puts bnk_candles = bnk_thread.value
-puts btm_candles = btm_thread.value
-
 def es_post(path, body)
   uri = URI.parse("http://#{ENV['ES_URL']}/#{path}")
   header = { 'Content-Type': 'text/json' }
