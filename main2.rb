@@ -28,11 +28,11 @@ loop do
     url = "#{BNK_BASE}/#{pair}/ticker"
     json = Net::HTTP.get(URI.parse(url))
     body = JSON.parse(json)
-    bnk_tickers[pair] = body["data"]["sell"]
+    bnk_tickers[pair] = body["data"]["sell"].to_f
   end
 
-  bnk_tickers["ltc_jpy"] = bnk_tickers.delete('ltc_btc').to_f * bnk_tickers["btc_jpy"].to_f
-  bnk_tickers["eth_jpy"] = bnk_tickers.delete('eth_btc').to_f * bnk_tickers["btc_jpy"].to_f
+  bnk_tickers["ltc_jpy"] = bnk_tickers.delete('ltc_btc') * bnk_tickers["btc_jpy"]
+  bnk_tickers["eth_jpy"] = bnk_tickers.delete('eth_btc') * bnk_tickers["btc_jpy"]
 
   btm_tickers = { }
 
