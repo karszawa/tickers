@@ -81,3 +81,8 @@ bnk_candles.each do |candle|
    value = (candle.start_value + candle.end_value).abs / 2
   `curl -XPOST '#{ENV['ES_URL']}:9200/ticker/#{candle.symbol}' -d { "price": #{value} }`
 end
+
+btm_candles.each do |candle|
+   value = (candle.start_value + candle.end_value).abs / 2
+  `curl -XPOST '#{ENV['ES_URL']}:9200/ticker/#{candle.symbol}' -d { "price": #{value} }`
+end
