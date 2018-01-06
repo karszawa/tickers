@@ -12,7 +12,7 @@ require 'pry'
 BNK_BASE = 'https://public.bitbank.cc'
 BTM_BASE = 'https://api.bithumb.com'
 
-CandleStick = Value.new(:timestamp, :symbol, :start_value, :end_value, :high_value, :low_value)
+CandleStick = Value.new(:timestamp, :symbol, :start_value, :end_value, :high_value, :low_value, :bid_price, :ask_price)
 
 krw_jpy = JSON.parse(Net::HTTP.get(URI.parse('http://api.aoikujira.com/kawase/json/jpy'))).fetch('KRW').to_f
 now = Time.now.freeze
@@ -27,7 +27,7 @@ bnk_thread = Thread.new do
     body = JSON.parse(json)
     transactions = body['data']['transactions']
 
-    prices[pair] = transactions.select { |tx| now - Time.at(tx['executed_at'] / 1000) < 60 }.map { |tx| tx['price'].to_f }
+    prices[pair] = transactions.select { |tx| now - Time.at(tx['executed_at'] / 1000) < 600 }.map { |tx| tx['price'].to_f }
   end
 
   if latest_btc_price = prices['btc_jpy'].first
@@ -59,7 +59,7 @@ btm_thread = Thread.new do
     body = JSON.parse(json)
     transactions = body['data']
 
-    prices[currency] = transactions.select { |tx| now - Chronic.parse(tx['transaction_date']) < 60 }.map { |tx| tx['price'].to_f / krw_jpy }
+    prices[currency] = transactions.select { |tx| now - Chronic.parse(tx['transaction_date']) < 600 }.map { |tx| tx['price'].to_f / krw_jpy }
   end
 
   %w(btc_jpy xrp_jpy ltc_jpy eth_jpy bcc_jpy).map do |pair|
