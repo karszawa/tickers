@@ -47,7 +47,7 @@ loop do
     url = "#{BTM_BASE}/public/ticker/#{currency}"
     json = Net::HTTP.get(URI.parse(url))
     body = JSON.parse(json)
-    btm_tickers[currency] = body["data"]["sell_price"].to_f * krw_jpy
+    btm_tickers[currency] = body["data"]["buy_price"].to_f * krw_jpy
   end
 
   %w(btc_jpy xrp_jpy ltc_jpy eth_jpy bcc_jpy).each_with_index do |pair, i|
@@ -59,4 +59,6 @@ loop do
       price: price
     }.to_json)
   end
+
+  sleep(60)
 end
