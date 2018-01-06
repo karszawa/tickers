@@ -79,12 +79,25 @@ end
 puts bnk_candles = bnk_thread.value
 puts btm_candles = btm_thread.value
 
+def es_post(body)
+  url = URI.parse("#{ENV['ES_URL']}:9200/ticker/#{candle.symbol}")
+  header = { 'Content-Type': 'text/json' }
+  http = Net::HTTP.new(uri.host, uri.port)
+  request = Net::HTTP::Post.new(uri.request_uri, header)
+  request.body = body
+  http.request(request)
+end
+
 bnk_candles.each do |candle|
-   value = (candle.start_value + candle.end_value) / 2
-  `curl -XPOST '#{ENV['ES_URL']}:9200/ticker/#{candle.symbol}' -d { "price": #{value} }`
+  next if candle.start_value && candle.end_value
+
+  value = (candle.start_value + candle.end_value) / 2
+  es_post({ price: value }.to_json)
 end
 
 btm_candles.each do |candle|
-   value = (candle.start_value + candle.end_value) / 2
-  `curl -XPOST '#{ENV['ES_URL']}:9200/ticker/#{candle.symbol}' -d { "price": #{value} }`
+  next if candle.start_value && candle.end_value
+
+  value = (candle.start_value + candle.end_value) / 2
+  es_post({ price: value }.to_json)
 end
