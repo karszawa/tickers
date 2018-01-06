@@ -27,7 +27,7 @@ bnk_thread = Thread.new do
     body = JSON.parse(json)
     transactions = body['data']['transactions']
 
-    prices[pair] = transactions.select { |tx| now - Time.at(tx['executed_at'] / 1000) < 60 }.map { |tx| tx['price'] }
+    prices[pair] = transactions.select { |tx| now - Time.at(tx['executed_at'] / 1000) < 60 }.map { |tx| tx['price'].to_f }
   end
 
   if latest_btc_price = prices['btc_jpy'].first
@@ -80,11 +80,11 @@ puts bnk_candles = bnk_thread.value
 puts btm_candles = btm_thread.value
 
 bnk_candles.each do |candle|
-   value = (candle.start_value + candle.end_value).abs / 2
+   value = (candle.start_value + candle.end_value) / 2
   `curl -XPOST '#{ENV['ES_URL']}:9200/ticker/#{candle.symbol}' -d { "price": #{value} }`
 end
 
 btm_candles.each do |candle|
-   value = (candle.start_value + candle.end_value).abs / 2
+   value = (candle.start_value + candle.end_value) / 2
   `curl -XPOST '#{ENV['ES_URL']}:9200/ticker/#{candle.symbol}' -d { "price": #{value} }`
 end
