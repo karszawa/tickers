@@ -108,6 +108,7 @@ bnk_candles.zip(btm_candles).each do |bnk_candle, btm_candle|
 
   es_post('ticker/deviation', {
     timestamp: now.to_i,
-    price: (bnk_value + btm_value) / 2
+    symbol: bnk_candle.symbol,
+    price: btm_value / bnk_value
   }.to_json)
 end
