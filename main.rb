@@ -89,14 +89,14 @@ def es_post(body)
 end
 
 bnk_candles.each do |candle|
-  next if candle.start_value && candle.end_value
+  next unless candle.start_value && candle.end_value
 
   value = (candle.start_value + candle.end_value) / 2
   es_post({ price: value }.to_json)
 end
 
 btm_candles.each do |candle|
-  next if candle.start_value && candle.end_value
+  next unless candle.start_value && candle.end_value
 
   value = (candle.start_value + candle.end_value) / 2
   es_post({ price: value }.to_json)
