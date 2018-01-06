@@ -92,14 +92,7 @@ def es_post(path, body)
   http.request(request)
 end
 
-bnk_candles.each do |candle|
-  next unless candle.start_value && candle.end_value
-
-  value = (candle.start_value + candle.end_value) / 2
-  es_post("ticker/currency", candle.to_h.merge({ price: value }).to_json)
-end
-
-btm_candles.each do |candle|
+[ *bnk_candles, *btm_candles ].each do |candle|
   next unless candle.start_value && candle.end_value
 
   value = (candle.start_value + candle.end_value) / 2
