@@ -12,7 +12,7 @@ require 'pry'
 BNK_BASE = 'https://public.bitbank.cc'
 BTM_BASE = 'https://api.bithumb.com'
 
-CandleStick = Value.new(:@timestamp, :symbol, :start_value, :end_value, :high_value, :low_value)
+CandleStick = Value.new(:timestamp, :symbol, :start_value, :end_value, :high_value, :low_value)
 
 krw_jpy = JSON.parse(Net::HTTP.get(URI.parse('http://api.aoikujira.com/kawase/json/jpy'))).fetch('KRW').to_f
 now = Time.now.freeze
@@ -40,7 +40,7 @@ bnk_thread = Thread.new do
 
   candles = %w(btc_jpy xrp_jpy ltc_jpy eth_jpy bcc_jpy).map do |pair|
     CandleStick.with(
-      '@timestamp': now,
+      timestamp: now,
       symbol: "bnk_#{pair}",
       start_value: prices[pair].last,
       end_value: prices[pair].first,
@@ -66,7 +66,7 @@ btm_thread = Thread.new do
     currency = (pair == 'bcc_jpy' ? 'bch' : pair.split('_').first)
 
     CandleStick.with(
-      '@timestamp': now.to_i,
+      timestamp: now.to_i,
       symbol: "btm_#{pair}",
       start_value: prices[currency].last,
       end_value: prices[currency].first,
