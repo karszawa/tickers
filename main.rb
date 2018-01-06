@@ -80,7 +80,11 @@ bnk_candles = bnk_thread.value
 btm_candles = btm_thread.value
 
 def es_post(path, body)
-  uri = URI.parse("http://#{ENV['ES_URL']}/#{path}")
+  url = "http://#{ENV['ES_URL']}/#{path}"
+
+  STDERR.puts "POST: #{url} with #{body}"
+
+  uri = URI.parse(url)
   header = { 'Content-Type': 'text/json' }
   http = Net::HTTP.new(uri.host, uri.port)
   request = Net::HTTP::Post.new(uri.request_uri, header)
